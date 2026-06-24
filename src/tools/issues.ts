@@ -41,4 +41,28 @@ export function registerIssueTools(server: McpServer, api: ApiClient): void {
     },
     async (a) => api.get<IssueReportDetail>(`/user/issuereports/${a.reportExternalId as string}`)
   )
+
+  registerJsonTool(
+    server,
+    'update_issue',
+    {
+      title: 'Update issue title and description',
+      description:
+        'Updates the title and/or description of a single issue inside an issue report. ' +
+        'Both the report and issue external IDs are required. Pass null to clear the description.',
+      inputSchema: {
+        reportExternalId: z.string().uuid(),
+        issueExternalId: z.string().uuid(),
+        title: z.string().min(1).max(300),
+        description: z.string().max(2000).nullable().optional()
+      }
+    },
+    async (a) =>
+      api.put<null>('/user/issuereports/issue', {
+        reportExternalId: a.reportExternalId,
+        issueExternalId: a.issueExternalId,
+        title: a.title,
+        description: a.description ?? null
+      })
+  )
 }
