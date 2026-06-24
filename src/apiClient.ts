@@ -46,7 +46,7 @@ export class ApiClient {
       try { envelope = (await res.json()) as Envelope<T> } catch { /* ignore */ }
       const detail = envelope?.errors?.map(e => e.message).filter(Boolean).join('; ')
         || 'Active subscription required.'
-      throw new Error(`${detail} Renew at https://planbudowlany.online/pricing`)
+      throw new Error(`${detail} Renew at https://front.planbudowlany.online/app/settings?tab=billing`)
     }
 
     let envelope: Envelope<T> | null = null
