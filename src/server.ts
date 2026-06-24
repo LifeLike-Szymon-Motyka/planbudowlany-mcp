@@ -17,7 +17,7 @@ export function registerAllTools(server: McpServer, api: ApiClient): void {
 }
 
 export function buildServer(api: ApiClient): McpServer {
-  const server = new McpServer({ name: 'planbudowlany', version: '0.1.0' })
+  const server = new McpServer({ name: 'planbudowlany', version: '0.21.37' })
   registerAllTools(server, api)
   return server
 }

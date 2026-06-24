@@ -1,0 +1,30 @@
+name: Publish to npm
+
+# Publishes when a GitHub Release is published. The release tag (e.g. v0.1.0) should
+# match the version in package.json. Manual runs are also allowed via workflow_dispatch.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # required for npm provenance (supply-chain attestation)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      # --provenance attaches a signed build attestation linking the package to this repo+commit.
+      # Requires a public repo, id-token: write, and npm >= 9.5 (bundled with Node 20).
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
