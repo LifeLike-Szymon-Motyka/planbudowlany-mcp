@@ -84,3 +84,80 @@ npm install
 npm test          # vitest
 npm run build     # tsc -> dist/
 ```
+
+---
+
+# 🇵🇱 Wersja polska
+
+Serwer MCP dla [Plan Budowlany](https://planbudowlany.online) — pozwala agentowi AI (Claude Desktop itp.) czytać i zarządzać projektem budowlanym: zadania, podzadania, koszty, usterki, dziennik budowy i harmonogram (wykres Gantta).
+
+## Konfiguracja
+
+1. W aplikacji wejdź w **Ustawienia workspace → Klucze API** i wygeneruj klucz (`pb_...`). Klucz jest przypisany do **jednego** projektu — wszystkie narzędzia działają na nim.
+2. Dodaj serwer do pliku konfiguracyjnego Claude Desktop (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "planbudowlany": {
+      "command": "npx",
+      "args": ["planbudowlany-mcp"],
+      "env": {
+        "PB_API_KEY": "pb_twoj_klucz",
+        "PB_API_URL": "https://api.planbudowlany.online"
+      }
+    }
+  }
+}
+```
+
+3. Zrestartuj Claude Desktop — narzędzia Plan Budowlany pojawią się automatycznie.
+
+### Zmienne środowiskowe
+
+| Zmienna | Wymagana | Opis |
+|---|---|---|
+| `PB_API_KEY` | **tak** | Klucz API z panelu (zaczyna się od `pb_`). |
+| `PB_API_URL` | nie | Adres API. Domyślnie produkcja `https://api.planbudowlany.online`. Dla środowiska deweloperskiego ustaw `https://dev-api.planbudowlany.online`, a lokalnie `http://localhost:8080`. |
+
+## Dostępne narzędzia
+
+| Narzędzie | Do czego służy |
+|---|---|
+| `get_workspace_info` | Nazwa projektu, waluta, budżet, członkowie |
+| `list_tasks` / `get_task` | Przeglądanie zadań głównych (filtr po statusie / przypisane do mnie) |
+| `create_task` / `update_task_status` / `create_subtask` | Zarządzanie zadaniami |
+| `list_costs` / `get_cost_summary` | Koszty i podsumowanie budżet-vs-wydatki |
+| `create_cost` | Dodanie kosztu (zawsze przypięty do zadania) |
+| `list_issues` / `get_issue` | Zgłoszenia usterek |
+| `list_activity` | Dziennik budowy (od najnowszych) |
+| `get_timeline` | Harmonogram / dane Gantta z zależnościami |
+
+## Przykłady użycia
+
+Po konfiguracji rozmawiasz z agentem naturalnym językiem — sam dobiera narzędzia:
+
+> „Jaki mam budżet na projekt i ile już wydałem?"
+→ `get_workspace_info` + `get_cost_summary`
+
+> „Dodaj zadanie 'Wylewka fundamentów' z terminem 15 lipca i ustaw na 'w trakcie'."
+→ `create_task`
+
+> „Pod tym zadaniem dodaj podzadanie 'Zamówić beton' na 10 lipca."
+→ `create_subtask`
+
+**Koszty są zawsze powiązane z zadaniem.** Jeśli nie powiesz z którym, agent najpierw wylistuje zadania i dopyta:
+> „Dodaj koszt 4800 zł za beton towarowy."
+> → agent: „Do którego zadania przypisać ten koszt?" (wywołuje `list_tasks`)
+> „Do tego z fundamentami."
+→ `create_cost`
+
+> „Co się ostatnio działo w projekcie?" → `list_activity`
+> „Pokaż harmonogram na lipiec — co i kiedy ma termin." → `get_timeline`
+> „Czy są otwarte usterki?" → `list_issues` + `get_issue`
+
+## Uwagi
+
+- **Zakres workspace:** klucz API jest związany z jednym projektem; nie podaje się ID workspace'a — każde narzędzie działa na właściwym projekcie.
+- **Wartości enumów:** status zadania to `toDo | inProgress | done | delayed`; waluta `pln | eur | usd`. Daty w formacie ISO-8601 (`2026-07-15`).
+- **Audyt zapisów:** każde utworzenie/zmiana trafia do dziennika budowy, więc `list_activity` odzwierciedla działania agenta.
