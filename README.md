@@ -21,7 +21,7 @@ MCP server for [Plan Budowlany](https://planbudowlany.online) — lets an MCP-ca
 }
 ```
 
-The key is scoped to one workspace; all tools operate on that project. `PB_API_URL` defaults to production (`https://api.planbudowlany.online`), so you don't need to set it. To target another environment, add it to `env` — e.g. `"PB_API_URL": "https://dev-api.planbudowlany.online"` for dev or `"http://localhost:8080"` for a local backend.
+The key is scoped to one workspace; all tools operate on that project. `PB_API_URL` defaults to production (`https://api.planbudowlany.online`), so you don't need to set it. To target a self-hosted/local backend, add it to `env` — e.g. `"PB_API_URL": "http://localhost:8080"`.
 
 ## Tools
 
@@ -109,7 +109,7 @@ Serwer MCP dla [Plan Budowlany](https://planbudowlany.online) — pozwala agento
 }
 ```
 
-`PB_API_URL` domyślnie wskazuje produkcję (`https://api.planbudowlany.online`), więc nie trzeba go ustawiać. Aby celować w inne środowisko, dodaj go do `env` — np. `"PB_API_URL": "https://dev-api.planbudowlany.online"` (dev) lub `"http://localhost:8080"` (lokalny backend).
+`PB_API_URL` domyślnie wskazuje produkcję (`https://api.planbudowlany.online`), więc nie trzeba go ustawiać. Aby celować w lokalny/własny backend, dodaj go do `env` — np. `"PB_API_URL": "http://localhost:8080"`.
 
 3. Zrestartuj Claude Desktop — narzędzia Plan Budowlany pojawią się automatycznie.
 
@@ -118,7 +118,7 @@ Serwer MCP dla [Plan Budowlany](https://planbudowlany.online) — pozwala agento
 | Zmienna | Wymagana | Opis |
 |---|---|---|
 | `PB_API_KEY` | **tak** | Klucz API z panelu (zaczyna się od `pb_`). |
-| `PB_API_URL` | nie | Adres API. Domyślnie produkcja `https://api.planbudowlany.online`. Dla środowiska deweloperskiego ustaw `https://dev-api.planbudowlany.online`, a lokalnie `http://localhost:8080`. |
+| `PB_API_URL` | nie | Adres API. Domyślnie produkcja `https://api.planbudowlany.online`. Dla lokalnego/własnego backendu ustaw `http://localhost:8080`. |
 
 ## Dostępne narzędzia
 
