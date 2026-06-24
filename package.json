@@ -6,6 +6,10 @@
   "bin": { "planbudowlany-mcp": "dist/index.js" },
   "files": ["dist", "README.md"],
   "engines": { "node": ">=20" },
+  "homepage": "https://github.com/LifeLike-Szymon-Motyka/planbudowlany-mcp#readme",
+  "repository": { "type": "git", "url": "git+https://github.com/LifeLike-Szymon-Motyka/planbudowlany-mcp.git" },
+  "bugs": { "url": "https://github.com/LifeLike-Szymon-Motyka/planbudowlany-mcp/issues" },
+  "author": "Plan Budowlany",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
