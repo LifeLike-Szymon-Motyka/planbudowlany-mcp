@@ -15,6 +15,9 @@ describe('decodeWorkspaceId', () => {
     const jwt = fakeJwt({ sub: '3' })
     expect(() => decodeWorkspaceId(jwt)).toThrow(/WorkspaceId/)
   })
+  it('throws a clear error (not a raw SyntaxError) for an opaque/non-JWT token', () => {
+    expect(() => decodeWorkspaceId('opaque-reference-token')).toThrow(/api_key token/i)
+  })
 })
 
 describe('TokenManager', () => {
@@ -52,5 +55,31 @@ describe('TokenManager', () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: false, status: 400, json: async () => ({ error: 'invalid_grant' }) })
     const tm = new TokenManager({ apiKey: 'pb_bad', apiUrl }, fetchMock as unknown as typeof fetch)
     await expect(tm.getAccessToken()).rejects.toThrow(/API key/i)
+  })
+
+  it('single-flights concurrent calls into one token request', async () => {
+    const jwt = fakeJwt({ WorkspaceId: 'ws-abc' })
+    const fetchMock = vi.fn().mockImplementation(async () => ({
+      ok: true,
+      json: async () => ({ access_token: jwt, refresh_token: 'rt1', expires_in: 3600, token_type: 'Bearer' })
+    }))
+    const tm = new TokenManager({ apiKey: 'pb_k', apiUrl }, fetchMock as unknown as typeof fetch)
+    const [a, b, c] = await Promise.all([tm.getAccessToken(), tm.getAccessToken(), tm.getAccessToken()])
+    expect(a).toBe(jwt)
+    expect(b).toBe(jwt)
+    expect(c).toBe(jwt)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('still caches when expires_in is missing (no per-call re-exchange)', async () => {
+    const jwt = fakeJwt({ WorkspaceId: 'ws-abc' })
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ access_token: jwt, refresh_token: 'rt1', token_type: 'Bearer' }) // no expires_in
+    })
+    const tm = new TokenManager({ apiKey: 'pb_k', apiUrl }, fetchMock as unknown as typeof fetch)
+    await tm.getAccessToken()
+    await tm.getAccessToken()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })

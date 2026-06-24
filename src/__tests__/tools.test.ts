@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
-import { registerAllTools } from '../index.js'
+import { registerAllTools } from '../server.js'
 
 describe('registerAllTools', () => {
   it('registers every expected tool without throwing', () => {

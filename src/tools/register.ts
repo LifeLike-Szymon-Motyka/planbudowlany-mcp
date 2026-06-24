@@ -14,7 +14,10 @@ export function registerJsonTool<S extends ZodRawShape>(
   server.registerTool(name, meta as never, (async (args: Record<string, unknown>) => {
     try {
       const result = await handler(args)
-      return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
+      const text = result === null || result === undefined
+        ? 'No data returned (empty result).'
+        : JSON.stringify(result, null, 2)
+      return { content: [{ type: 'text', text }] }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)
       return { content: [{ type: 'text', text: `Error: ${message}` }], isError: true }

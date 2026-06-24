@@ -49,7 +49,11 @@ export class ApiClient {
     }
 
     if (!res.ok || (envelope && envelope.success === false)) {
-      const msg = envelope?.errors?.map(e => e.message).join('; ') || `HTTP ${res.status} on ${path}`
+      const fromErrors = envelope?.errors?.map(e => e.message).filter(Boolean).join('; ')
+      const msg = fromErrors
+        || (envelope && envelope.success === false
+          ? `Request to ${path} failed (API returned success:false with no error detail).`
+          : `HTTP ${res.status} on ${path}`)
       throw new Error(msg)
     }
     return (envelope ? envelope.data : null) as T
