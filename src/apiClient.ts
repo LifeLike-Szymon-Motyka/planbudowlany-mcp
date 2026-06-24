@@ -41,6 +41,14 @@ export class ApiClient {
       return this.request<T>(method, path, body, true)
     }
 
+    if (res.status === 402) {
+      let envelope: Envelope<T> | null = null
+      try { envelope = (await res.json()) as Envelope<T> } catch { /* ignore */ }
+      const detail = envelope?.errors?.map(e => e.message).filter(Boolean).join('; ')
+        || 'Active subscription required.'
+      throw new Error(`${detail} Renew at https://planbudowlany.online/pricing`)
+    }
+
     let envelope: Envelope<T> | null = null
     try {
       envelope = (await res.json()) as Envelope<T>
