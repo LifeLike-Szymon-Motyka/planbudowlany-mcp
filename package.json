@@ -3,12 +3,24 @@
   "version": "0.21.37",
   "description": "MCP server for Plan Budowlany — manage construction project tasks, costs, issues and timeline from an LLM agent.",
   "type": "module",
-  "bin": { "planbudowlany-mcp": "dist/index.js" },
-  "files": ["dist", "README.md"],
-  "engines": { "node": ">=20" },
+  "bin": {
+    "planbudowlany-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "homepage": "https://github.com/LifeLike-Szymon-Motyka/planbudowlany-mcp#readme",
-  "repository": { "type": "git", "url": "git+https://github.com/LifeLike-Szymon-Motyka/planbudowlany-mcp.git" },
-  "bugs": { "url": "https://github.com/LifeLike-Szymon-Motyka/planbudowlany-mcp/issues" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LifeLike-Szymon-Motyka/planbudowlany-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LifeLike-Szymon-Motyka/planbudowlany-mcp/issues"
+  },
   "author": "Plan Budowlany",
   "scripts": {
     "build": "tsc",
@@ -16,15 +28,20 @@
     "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["mcp", "modelcontextprotocol", "planbudowlany", "construction"],
+  "keywords": [
+    "mcp",
+    "modelcontextprotocol",
+    "planbudowlany",
+    "construction"
+  ],
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/node": "^20.14.0",
     "typescript": "^5.6.0",
-    "vitest": "^2.1.0",
-    "@types/node": "^20.14.0"
+    "vitest": "^4.1.9"
   }
 }
