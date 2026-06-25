@@ -1,6 +1,6 @@
 {
   "name": "planbudowlany-mcp",
-  "version": "0.21.37",
+  "version": "0.21.38",
   "description": "MCP server for Plan Budowlany — manage construction project tasks, costs, issues and timeline from an LLM agent.",
   "type": "module",
   "bin": {
