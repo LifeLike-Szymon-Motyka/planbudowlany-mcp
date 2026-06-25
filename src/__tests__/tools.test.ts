@@ -19,12 +19,12 @@ describe('registerAllTools', () => {
         'get_workspace_info',
         'list_tasks', 'get_task', 'create_task', 'update_task_status', 'create_subtask',
         'list_costs', 'get_cost_summary', 'create_cost',
-        'list_issues', 'get_issue',
+        'list_issues', 'get_issue', 'update_issue',
         'list_activity',
         'get_timeline'
       ])
     )
-    expect(registered.length).toBe(13)
+    expect(registered.length).toBe(14)
     spy.mockRestore()
   })
 })

@@ -48,20 +48,19 @@ export function registerIssueTools(server: McpServer, api: ApiClient): void {
     {
       title: 'Update issue title and description',
       description:
-        'Updates the title and/or description of a single issue inside an issue report. ' +
-        'Both the report and issue external IDs are required. Pass null to clear the description.',
+        'Updates the title and description of a single issue inside an issue report. ' +
+        'title is always required. description is optional — omitting it or passing null clears the existing description. ' +
+        'To preserve the current description, fetch it with get_issue first and pass it here.',
       inputSchema: {
         reportExternalId: z.string().uuid(),
         issueExternalId: z.string().uuid(),
         title: z.string().min(1).max(300),
-        description: z.string().max(2000).nullable().optional()
+        description: z.string().max(2000).nullish()
       }
     },
     async (a) =>
       api.put<null>('/user/issuereports/issue', {
-        reportExternalId: a.reportExternalId,
-        issueExternalId: a.issueExternalId,
-        title: a.title,
+        ...a,
         description: a.description ?? null
       })
   )
