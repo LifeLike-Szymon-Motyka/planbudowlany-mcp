@@ -33,6 +33,7 @@ The key is scoped to one workspace; all tools operate on that project. `PB_API_U
 | `list_costs` / `get_cost_summary` | Costs and budget-vs-spend summary |
 | `create_cost` | Add a cost (must be attached to a task) |
 | `list_issues` / `get_issue` | Construction issue/defect reports |
+| `update_issue` | Edit an issue's title and description |
 | `list_activity` | Project activity diary (newest first) |
 | `get_timeline` | Schedule / Gantt data with dependencies |
 
@@ -130,6 +131,7 @@ Serwer MCP dla [Plan Budowlany](https://planbudowlany.online) — pozwala agento
 | `list_costs` / `get_cost_summary` | Koszty i podsumowanie budżet-vs-wydatki |
 | `create_cost` | Dodanie kosztu (zawsze przypięty do zadania) |
 | `list_issues` / `get_issue` | Zgłoszenia usterek |
+| `update_issue` | Edycja tytułu i opisu usterki |
 | `list_activity` | Dziennik budowy (od najnowszych) |
 | `get_timeline` | Harmonogram / dane Gantta z zależnościami |
 
